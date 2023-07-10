@@ -1,6 +1,21 @@
 {
+  "name": "SABJI-MANDI-BACKEND",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app.js"
+  },
+  "author": "deepti",
+  "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cookies-parser": "^1.2.0",
     "express": "^4.18.2",
-    "vercel": "^31.0.1"
-  }
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.3.0",
+    "nodemon": "^2.0.22"
+  },
+  "description": ""
 }
