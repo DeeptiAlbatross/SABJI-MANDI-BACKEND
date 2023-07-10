@@ -1,46 +1,47 @@
 const AddToCartModel = require("../../models/addToCart");
-
-const bcrypt = require("bcrypt");
 const { json } = require("body-parser");
 const { response } = require("express");
 var express = require("express");
 var router = express.Router();
-const jwt = require("jsonwebtoken");
 
 class AddToCartController {
-    async AddToCartAdd (req,res)  {
-        const { user, cartItems } = req.body;
-      try{
-    
-        // check if user exits or not
-        const isUserExist = await AddToCartModel.findOne({ user });
-        console.log("user exists");
-      
-        // if exists then add the data
-        if (isUserExist) {
-          //   use $addToSet ,to prevent adding of duplicate items.and use findoneandupdate means that the useer already exists and we are adding item to its existing item cart
-          const data = await AddToCartModel.findOneAndUpdate(
-            { user },
-            { $addToSet: { cartItems: cartItems } }
-          );
-          res.send({ success: true, data:data });
-          res.send({message:"added too cart"});
+   async AddToCartAdd(req, res) {
+    const { userId,productId,quantity,price } = req.body;
+  
+    try {
+      let cart = await AddToCartModel.findOne({ userId });
+  
+      if (cart) {
+        //cart exists for user
+        let itemIndex = cart.products.findIndex(p => p.productId == productId);
+  
+        if (itemIndex > -1) {
+          //product exists in the cart, update the quantity
+          let productItem = cart.products[itemIndex];
+          productItem.quantity = quantity;
+          cart.products[itemIndex] = productItem;
         } else {
-          //if user doesn't exists then create the cart for new user.
-      
-          const AddNewItems = new AddToCartModel({
-            ...req.body,
-          });
-           const add = await AddNewItems.save();
-           res.send({ success: true,data:add });
+          //product does not exists in cart, add new item
+          cart.products.push({ productId, quantity,price });
         }
-    }catch(err){
-        console.log(err);
+        newCart = await cart.save();
+        return res.status(201).send(newCart);
+      } else {
+        //no cart for user, create new cart
+        const newCart = await AddToCartModel.create({
+          userId,
+          products: [{ productId, quantity, price }]
+        });
+  
+        return res.status(201).send(newCart);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Something went wrong");
     }
-    };
-
+  };
+  
 }
-
 
 class AddToCartControllers {
     constructor() {

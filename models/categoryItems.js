@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var ObjectID = mongoose.Schema.Types.ObjectId;
+
 const categoryItemSchema = mongoose.Schema({
   name: {
     type: String,

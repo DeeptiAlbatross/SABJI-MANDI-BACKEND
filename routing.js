@@ -6,5 +6,5 @@ var AddToCartRoute = require("./project/addToCart/routing");
 module.exports = function (app) {
   app.use("/api", CategoryRoute);
   app.use("/api",AuthenticationRoute);
-  app.use("api",AddToCartRoute);
+  app.use("/api",AddToCartRoute);
 }
