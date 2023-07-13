@@ -13,6 +13,4 @@ router.get("/category/item/details", obj.category.categoryItemDetails);
 
 
 
-
-
 module.exports = router;

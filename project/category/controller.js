@@ -56,7 +56,7 @@ class CategoryController {
   // Api to delete the category
   async categoryDelete(req, res, next) {
     try {
-      const { id, categoryName } = req.body;
+      const { id } = req.body;
       console.log("ID", id, categoryName);
       const deleted = await CategoryModel.findOneAndRemove(
         { _id: id },
