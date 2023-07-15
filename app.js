@@ -3,9 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
-
-const app = express();
-// app use
+var app = express();
+var cors = require('cors');
+app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(cookieParser());
