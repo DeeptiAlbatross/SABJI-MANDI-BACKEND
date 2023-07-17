@@ -106,12 +106,12 @@ class CategoryController {
 
   // Api to give the details of the item
   async categoryItemDetails(req, res, next) {
-    const { id } = req.body;
+    const { id } = req.params;
    try{
 
     const savedDetails = await CategoryItemModel.findOne({ _id: id }).populate(
       "category");
-    res.send({ success: true, data: savedDetails });
+    res.send({ success: true, data: savedDetails ,message :"Data item details"});
   } catch(error) {
     res.send(error);
   }

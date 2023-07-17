@@ -9,7 +9,7 @@ router.post("/category/update", obj.category.categoryupdate);
 router.delete("/category/delete", obj.category.categoryDelete);
 router.post("/category/item/add", obj.category.categoryItemAdd);
 router.get("/category/item/fetch", obj.category.categoryItemFetch);
-router.get("/category/item/details", obj.category.categoryItemDetails);
+router.get("/category/item/:id/details", obj.category.categoryItemDetails);
 
 
 
