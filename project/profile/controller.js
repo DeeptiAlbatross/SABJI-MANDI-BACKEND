@@ -51,35 +51,45 @@ class ProfileController{
         }
       }
 
-// async passwordChange(req,res){
-//       try {
-//         const { username, currentPassword, newPassword } = req.body;
-    
-//         // Check if the username and passwords are provided
-//         if (!username || !currentPassword || !newPassword) {
-//           return res.status(400).json({ error: 'Missing required fields' });
-//         }
-    
-//         const hashedPassword = '$2b$10$ruFBVNdRJPmebvlq3NlZ8.44L0PDfOY2h/wFdLoVtiBz3imZj5hKu';
-    
-//         const isPasswordMatch = await bcrypt.compare(currentPassword, hashedPassword);
-    
-//         if (!isPasswordMatch) {
-//           return res.status(401).json({ error: 'Invalid current password' });
-//         }
-    
-//         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+// Forgot password
+async  (req, res) {
+  const { email } = req.body;
+  // Here, you can validate the email address or perform other necessary checks
 
-//         return res.json({ message: 'Password changed successfully' });
+  // Generate a password reset token (you can use a library like `crypto` or `uuid` for this)
+  const resetToken = generateResetToken();
 
-//         res.send({message:true,data:hashedNewPassword});
+  // Save the reset token and its expiration date in your user database or storage
 
-//       } catch (error) {
+  // Compose the email
+  const emailContent = {
+    from: process.env.EMAIL_SENDER,
+    to: email,
+    subject: 'Password Reset',
+    text: `To reset your password, click on the following link: ${process.env.BASE_URL}/reset-password?token=${resetToken}`,
+  };
 
-//         console.error('Error:', error);
-//         res.status(500).json({ error: 'An internal server error occurred' });
-//       }
-//     }
+  // Configure the email service provider (e.g., SMTP)
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.SMTP_EMAIL,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
+
+  // Send the email
+  transporter.sendMail(emailContent, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ error: 'Failed to send reset email' });
+    } else {
+      console.log('Email sent:', info.response);
+      res.json({ message: 'Reset email sent successfully' });
+    }
+  });
+}; 
+
   }
 
 

@@ -69,7 +69,7 @@ class AuthenticationController {
       res.status(500).json({ message: "An error occurred" });
     }
   }
-// Api to sihnIn/logIn.
+// Api to signIn /logIn.
   async authenticationSignIn(req, res) {
     const { email, password } = req.body;
 
